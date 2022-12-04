@@ -81,8 +81,8 @@ def main():
 @app.route('/', methods=['GET'])
 def index():
     artist = get_artist('DMX')
-    album = sp.artist_albums(artist['id'], album_type='album')
-    return show_artist(artist), show_album_tracks(album)
+    # album = sp.artist_albums(artist['id'], album_type='album')
+    return show_artist(artist)
 
 if __name__ == '__main__':
     client_credentials_manager = SpotifyClientCredentials()

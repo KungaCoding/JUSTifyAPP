@@ -5,6 +5,7 @@ import argparse
 # from routes import urls_blueprint
 
 app = Flask(__name__)
+
 # app.register_blueprint(urls_blueprint)
 
 # SPOTIPY_CLIENT_ID = '68e71e0a3b2344d4942c2449a217a59e'
@@ -44,22 +45,6 @@ def show_album_tracks(album):
     return track['name']
 
 
-def show_artist_albums(artist):
-    albums = []
-    results = sp.artist_albums(artist['id'], album_type='album')
-    albums.extend(results['items'])
-    while results['next']:
-        results = sp.next(results)
-        albums.extend(results['items'])
-    print('Total albums: %s', len(albums))
-    unique = set()  # skip duplicate albums
-    for album in albums:
-        name = album['name'].lower()
-        if name not in unique:
-            print('ALBUM: %s', name)
-            unique.add(name)
-            show_album_tracks(album)
-
 
 def show_artist(artist):
     page = """"===={}====""".format(artist['name'])
@@ -68,6 +53,7 @@ def show_artist(artist):
         page += """Genres: {}""".format(','.join(artist['genres']))
     return page
 
+
 def main():
     # args = get_args()
     # artist = get_artist(args.artist)
@@ -75,20 +61,49 @@ def main():
     # artist_input = input("Search for an Artist: ")
     artist = get_artist('DMX')
     show_artist(artist)
-    show_artist_albums(artist)
+
+
+
+def get_albums(artist):
+    albums = []
+    results = sp.artist_albums(artist['id'], album_type='album')
+    albums.extend(results['items'])
+    return albums
+
+
+def get_tracks(album):
+    tracks = []
+    track_listing = ""
+    results = sp.album_tracks(album['id'])
+    tracks.extend(results['items'])
+    while results['next']:
+        results = sp.next(results)
+        tracks.extend(results['items'])
+    for track in tracks:
+        track_listing += ", " + track['name']
+    return track_listing
+
+
+def show_artist_tracks(artist):
+    albums = get_albums(artist)
+    page = ""
+    for album in albums:
+        tracks = get_tracks(album)
+        page += tracks
+    return page
 
 
 @app.route('/', methods=['GET'])
 def index():
     artist = get_artist('DMX')
     # album = sp.artist_albums(artist['id'], album_type='album')
-    return show_artist(artist)
+    return show_artist_tracks(artist)
 
 if __name__ == '__main__':
     client_credentials_manager = SpotifyClientCredentials()
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     # main()
-    app.run()
+    app.run(port=5001)
 
 
 

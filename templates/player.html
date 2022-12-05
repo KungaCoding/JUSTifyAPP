@@ -8,7 +8,7 @@
 <body>
     {% if devices|length == 0 %}
     Start a device and reload page!
-    {% endif %}
+    {% else %}
     <form>
         <label for="device">Select a device:</label>
         <select id="device" name="device">
@@ -31,5 +31,6 @@
     <button data-spotify-id="spotify:episode:6I3ZzCxRhRkNqnQNo8AZPV">
           Next
     </button>
+    {% endif %}
 </body>
 </html>

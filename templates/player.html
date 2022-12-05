@@ -6,6 +6,9 @@
     <h1>JUSTify Player</h1>
 </head>
 <body>
+    {% if devices|length == 0 %}
+    Start a device and reload page!
+    {% endif %}
     <form>
         <label for="device">Select a device:</label>
         <select id="device" name="device">

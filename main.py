@@ -152,12 +152,11 @@ def tracks():
 
 @app.route('/player', methods=['GET'])
 def player():
-    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
     scope = "user-read-playback-state,user-modify-playback-state"
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
     artist = get_artist(spotify, 'DMX')
     tracks = get_artist_tracks(spotify, artist)
+    # random_tracks = random.shuffle(tracks)
     res = spotify.devices()
     spotify.start_playback(uris=tracks)
     return res

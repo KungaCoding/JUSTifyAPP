@@ -22,17 +22,12 @@
         <input type="text" id="artist2" name="artist2">
         <input type="text" id="artist3" name="artist3">
         <input type="text" id="artist4" name="artist4">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Create Playlist">
+        <br>
+        <input type="submit" name="previous" value="previous">
+        <input type="submit" name="playpause" value="{{ play_pause_label }}">
+        <input type="submit" name="next" value="next">
     </form>
-    <button data-spotify-id="spotify:episode:7makk4oTQel546B0PZlDM5">
-          Previous
-    </button>
-    <button data-spotify-id="spotify:episode:43cbJh4ccRD7lzM2730YK3">
-          Pause
-    </button>
-    <button data-spotify-id="spotify:episode:6I3ZzCxRhRkNqnQNo8AZPV">
-          Next
-    </button>
     {% endif %}
 </body>
 </html>

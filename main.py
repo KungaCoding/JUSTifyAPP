@@ -1,7 +1,6 @@
 
 import os
-from pprint import pprint
-
+import random
 from flask import Flask, session, request, redirect
 from flask_session import Session
 import spotipy
@@ -121,6 +120,16 @@ def get_tracks(spotify, album):
     return tracks
 
 
+def get_artist_tracks(spotify, artist):
+    artist_tracks = []
+    albums = get_albums(spotify, artist)
+    for album in albums:
+        album_tracks = get_tracks(spotify, album)
+        for album_track in album_tracks:
+            artist_tracks.append(album_track)
+    return artist_tracks
+
+
 def show_artist_tracks(spotify, artist):
     albums = get_albums(spotify, artist)
     page = ""
@@ -139,14 +148,18 @@ def tracks():
     # album = sp.artist_albums(artist['id'], album_type='album')
     return show_artist_tracks(spotify, artist)
 
+
+
 @app.route('/player', methods=['GET'])
 def player():
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
     scope = "user-read-playback-state,user-modify-playback-state"
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
+    artist = get_artist(spotify, 'DMX')
+    tracks = get_artist_tracks(spotify, artist)
     res = spotify.devices()
-    spotify.start_playback(uris=['spotify:track:2Qf9dP03RpJ7l762cWJTvt'])
+    spotify.start_playback(uris=tracks)
     return res
 
 

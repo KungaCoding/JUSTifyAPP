@@ -130,17 +130,10 @@ def player():
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
     play_pause_label = 'pause'
     devices = spotify.devices()
-    current_playback = spotify.current_playback()
-    print(current_playback)
-    current_artist = "no current artist"
-    current_song = "no current song"
-    if current_playback:
-        current_artist = current_playback['item']['artists'][0]['name']
-        current_song = current_playback['item']['name']
-    print(current_artist)
-    print(current_song)
     if request.args.get('previous'):
         spotify.previous_track()
+        current_artist = get_current_playback_artist(spotify)
+        current_song = get_current_playback_song(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
     if request.args.get('playpause'):
@@ -148,13 +141,19 @@ def player():
         if play_or_pause == 'pause':
             spotify.pause_playback()
             play_pause_label = 'play'
+            current_artist = get_current_playback_artist(spotify)
+            current_song = get_current_playback_song(spotify)
         else:
             spotify.start_playback()
             play_pause_label = 'pause'
+            current_artist = get_current_playback_artist(spotify)
+            current_song = get_current_playback_song(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
     if request.args.get('next'):
         spotify.next_track()
+        current_artist = get_current_playback_artist(spotify)
+        current_song = get_current_playback_song(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
 
@@ -164,6 +163,8 @@ def player():
     artist3_name = str(request.args.get('artist3'))
     artist4_name = str(request.args.get('artist4'))
     if artist1_name == "None":
+        current_artist = get_current_playback_artist(spotify)
+        current_song = get_current_playback_song(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
     else:
@@ -179,11 +180,26 @@ def player():
         random.shuffle(tracks)
         playback_device = request.args.get('device')
         spotify.start_playback(device_id=playback_device, uris=tracks)
+        current_artist = get_current_playback_artist(spotify)
+        current_song = get_current_playback_song(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
 
 
+def get_current_playback_song(spotify):
+    playback = spotify.current_playback()
+    song_name = "no current song"
+    if playback is not None and playback['item'] is not None:
+        song_name = playback['item']['name']
+    return song_name
 
+
+def get_current_playback_artist(spotify):
+    playback = spotify.current_playback()
+    artists_name = "no current artists"
+    if playback is not None and playback['item'] is not None and playback['item']['artists'] is not None:
+        artists_name = playback['item']['artists'][0]['name']
+    return artists_name
 
 
 if __name__ == '__main__':

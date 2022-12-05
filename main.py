@@ -1,7 +1,7 @@
 
 import os
 import random
-from flask import Flask, session, request, redirect
+from flask import Flask, session, request, redirect, render_template
 from flask_session import Session
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -154,12 +154,16 @@ def tracks():
 def player():
     scope = "user-read-playback-state,user-modify-playback-state"
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
-    artist = get_artist(spotify, 'DMX')
-    tracks = get_artist_tracks(spotify, artist)
-    # random_tracks = random.shuffle(tracks)
-    res = spotify.devices()
-    spotify.start_playback(uris=tracks)
-    return res
+    artist_name = str(request.args.get('artist'))
+    if artist_name == "None":
+        return render_template("player.html")
+    else:
+        artist = get_artist(spotify, artist_name)
+        tracks = get_artist_tracks(spotify, artist)
+        # random_tracks = random.shuffle(tracks)
+        res = spotify.devices()
+        spotify.start_playback(uris=tracks)
+        return res
 
 
 

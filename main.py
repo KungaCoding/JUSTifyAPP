@@ -154,13 +154,16 @@ def tracks():
 def player():
     scope = "user-read-playback-state,user-modify-playback-state"
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
-    artist_name = str(request.args.get('artist'))
-    if artist_name == "None":
+    artist1_name = str(request.args.get('artist1'))
+    artist2_name = str(request.args.get('artist2'))
+    if artist1_name == "None":
         return render_template("player.html")
     else:
-        artist = get_artist(spotify, artist_name)
-        tracks = get_artist_tracks(spotify, artist)
-        # random_tracks = random.shuffle(tracks)
+        artist1 = get_artist(spotify, artist1_name)
+        artist2 = get_artist(spotify, artist2_name)
+        tracks1 = get_artist_tracks(spotify, artist1)
+        tracks2 = get_artist_tracks(spotify, artist2)
+        tracks = tracks1 + tracks2
         res = spotify.devices()
         spotify.start_playback(uris=tracks)
         return res

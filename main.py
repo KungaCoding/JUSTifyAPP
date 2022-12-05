@@ -1,8 +1,11 @@
 
 import os
+from pprint import pprint
+
 from flask import Flask, session, request, redirect
 from flask_session import Session
 import spotipy
+from spotipy.oauth2 import SpotifyOAuth
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
@@ -36,7 +39,9 @@ def index():
            f'<a href="/playlists">my playlists</a> | ' \
            f'<a href="/currently_playing">currently playing</a> | ' \
            f'<a href="/current_user">me</a> | ' \
-           f'<a href="/tracks">Tracks</a>' \
+           f'<a href="/tracks">Tracks</a> | ' \
+           f'<a href="/player">Player</a> | ' \
+
 
 
 
@@ -133,6 +138,20 @@ def tracks():
     artist = get_artist(spotify, 'DMX')
     # album = sp.artist_albums(artist['id'], album_type='album')
     return show_artist_tracks(spotify, artist)
+
+@app.route('/player', methods=['GET'])
+def player():
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+    scope = "user-read-playback-state,user-modify-playback-state"
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
+    res = spotify.devices()
+    spotify.start_playback(uris=['spotify:track:2Qf9dP03RpJ7l762cWJTvt'])
+    return res
+
+
+
+
 
 if __name__ == '__main__':
     app.run(threaded=True, port=int(os.environ.get("PORT",

@@ -100,10 +100,10 @@ def current_user():
 def get_artist(spotify, name):
     results = spotify.search(q='artist:' + name, type='artist')
     items = results['artists']['items']
-    if len(items) > 0:
-        return items[0]
-    else:
-        return None
+    for item in items:
+        if item['name'] == name:
+            return item
+    return None
 
 def get_albums(spotify, artist):
     albums = []

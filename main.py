@@ -23,15 +23,12 @@ def get_albums(artist):
 
 def get_tracks(album):
     tracks = []
-    track_listing = ""
     results = sp.album_tracks(album['id'])
     tracks.extend(results['items'])
     while results['next']:
         results = sp.next(results)
         tracks.extend(results['items'])
-    for track in tracks:
-        track_listing += ", " + track['name']
-    return track_listing
+    return tracks
 
 
 def show_artist_tracks(artist):
@@ -39,7 +36,7 @@ def show_artist_tracks(artist):
     page = ""
     for album in albums:
         tracks = get_tracks(album)
-        page += tracks
+        page += str(tracks)
     return page
 
 

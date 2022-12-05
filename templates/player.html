@@ -17,12 +17,15 @@
         {% endfor %}}
         </select>
         <br>
+        <br>
         Select artists:
         <input type="text" id="artist1" name="artist1">
         <input type="text" id="artist2" name="artist2">
         <input type="text" id="artist3" name="artist3">
         <input type="text" id="artist4" name="artist4">
         <input type="submit" value="Create Playlist">
+        <br>
+        {{ current_artist }} - {{ current_song }}
         <br>
         <input type="submit" name="previous" value="previous">
         <input type="submit" name="playpause" value="{{ play_pause_label }}">

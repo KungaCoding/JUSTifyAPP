@@ -7,9 +7,26 @@
 </head>
 <body>
     <form>
+        <label for="device">Select a device:</label>
+        <select id="device" name="device">
+        {% for device in devices %}
+            <option value="{{ device['id'] }}">{{ device['name'] }} {{ device['type'] }}</option>
+        {% endfor %}}
+        </select>
+        <br>
+        Select artists:
         <input type="text" id="artist1" name="artist1">
         <input type="text" id="artist2" name="artist2">
         <input type="submit" value="Submit">
     </form>
+    <button data-spotify-id="spotify:episode:7makk4oTQel546B0PZlDM5">
+          Previous
+    </button>
+    <button data-spotify-id="spotify:episode:43cbJh4ccRD7lzM2730YK3">
+          Pause
+    </button>
+    <button data-spotify-id="spotify:episode:6I3ZzCxRhRkNqnQNo8AZPV">
+          Next
+    </button>
 </body>
 </html>

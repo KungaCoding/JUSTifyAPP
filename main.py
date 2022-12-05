@@ -121,35 +121,32 @@ def show_artist_tracks(spotify, artist):
         page += str(tracks)
     return page
 
-
-# @app.route('/tracks', methods=['GET'])
-# def tracks():
-#     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
-#     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
-#     spotify = spotipy.Spotify(auth_manager=auth_manager)
-#     artist = get_artist(spotify, 'DMX')
-#     # album = sp.artist_albums(artist['id'], album_type='album')
-#     return show_artist_tracks(spotify, artist)
-
-
-
 @app.route('/player', methods=['GET'])
 def player():
     scope = "user-read-playback-state,user-modify-playback-state"
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
     artist1_name = str(request.args.get('artist1'))
     artist2_name = str(request.args.get('artist2'))
+    devices = spotify.devices()
     if artist1_name == "None":
-        return render_template("player.html")
+        return render_template("player.html", devices=devices["devices"])
     else:
         artist1 = get_artist(spotify, artist1_name)
         artist2 = get_artist(spotify, artist2_name)
         tracks1 = get_artist_tracks(spotify, artist1)
         tracks2 = get_artist_tracks(spotify, artist2)
         tracks = tracks1 + tracks2
-        spotify.devices()
-        spotify.start_playback(uris=tracks)
+        print(devices)
+        print(spotify.me())
+        playback_device = request.args.get('device')
+        spotify.start_playback(device_id=playback_device, uris=tracks)
         return redirect('/player')
+    # if "previous" in request.form:
+    #     return spotify.previous_track()
+    # if "pause" in request.form:
+    #     return spotify.pause_playback()
+    # if "next" in request.form:
+    #     return spotify.next_track()
 
 
 

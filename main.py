@@ -82,19 +82,6 @@ def current_user():
     return spotify.current_user()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 def get_artist(spotify, name):
     results = spotify.search(q='artist:' + name, type='artist')
     items = results['artists']['items']
@@ -120,12 +107,6 @@ def get_tracks(spotify, album):
 
 def get_artist_tracks(spotify, artist):
     artist_tracks = []
-    # albums = get_albums(spotify, artist)
-    # for album in albums:
-    #     album_tracks = get_tracks(spotify, album)
-    #     for album_track in album_tracks:
-    #         artist_tracks.append(album_track)
-    # return artist_tracks
     artist_top_tracks = spotify.artist_top_tracks(artist['uri'])
     for track in artist_top_tracks["tracks"]:
        artist_tracks.append(track["uri"])
@@ -141,14 +122,14 @@ def show_artist_tracks(spotify, artist):
     return page
 
 
-@app.route('/tracks', methods=['GET'])
-def tracks():
-    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
-    spotify = spotipy.Spotify(auth_manager=auth_manager)
-    artist = get_artist(spotify, 'DMX')
-    # album = sp.artist_albums(artist['id'], album_type='album')
-    return show_artist_tracks(spotify, artist)
+# @app.route('/tracks', methods=['GET'])
+# def tracks():
+#     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+#     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+#     spotify = spotipy.Spotify(auth_manager=auth_manager)
+#     artist = get_artist(spotify, 'DMX')
+#     # album = sp.artist_albums(artist['id'], album_type='album')
+#     return show_artist_tracks(spotify, artist)
 
 
 
@@ -166,9 +147,9 @@ def player():
         tracks1 = get_artist_tracks(spotify, artist1)
         tracks2 = get_artist_tracks(spotify, artist2)
         tracks = tracks1 + tracks2
-        res = spotify.devices()
+        spotify.devices()
         spotify.start_playback(uris=tracks)
-        return res
+        return redirect('/player')
 
 
 

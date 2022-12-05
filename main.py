@@ -122,11 +122,15 @@ def get_tracks(spotify, album):
 
 def get_artist_tracks(spotify, artist):
     artist_tracks = []
-    albums = get_albums(spotify, artist)
-    for album in albums:
-        album_tracks = get_tracks(spotify, album)
-        for album_track in album_tracks:
-            artist_tracks.append(album_track)
+    # albums = get_albums(spotify, artist)
+    # for album in albums:
+    #     album_tracks = get_tracks(spotify, album)
+    #     for album_track in album_tracks:
+    #         artist_tracks.append(album_track)
+    # return artist_tracks
+    artist_top_tracks = spotify.artist_top_tracks(artist['uri'])
+    for track in artist_top_tracks["tracks"]:
+       artist_tracks.append(track["uri"])
     return artist_tracks
 
 

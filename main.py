@@ -1,4 +1,5 @@
 import os
+import random
 from flask import Flask, session, request, redirect, render_template
 from flask_session import Session
 import spotipy
@@ -107,9 +108,10 @@ def get_tracks(spotify, album):
 
 def get_artist_tracks(spotify, artist):
     artist_tracks = []
-    artist_top_tracks = spotify.artist_top_tracks(artist['uri'])
-    for track in artist_top_tracks["tracks"]:
-       artist_tracks.append(track["uri"])
+    if artist != None:
+        artist_top_tracks = spotify.artist_top_tracks(artist['uri'])
+        for track in artist_top_tracks["tracks"]:
+            artist_tracks.append(track["uri"])
     return artist_tracks
 
 
@@ -127,15 +129,22 @@ def player():
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
     artist1_name = str(request.args.get('artist1'))
     artist2_name = str(request.args.get('artist2'))
+    artist3_name = str(request.args.get('artist3'))
+    artist4_name = str(request.args.get('artist4'))
     devices = spotify.devices()
     if artist1_name == "None":
         return render_template("player.html", devices=devices["devices"])
     else:
         artist1 = get_artist(spotify, artist1_name)
         artist2 = get_artist(spotify, artist2_name)
+        artist3 = get_artist(spotify, artist3_name)
+        artist4 = get_artist(spotify, artist4_name)
         tracks1 = get_artist_tracks(spotify, artist1)
         tracks2 = get_artist_tracks(spotify, artist2)
-        tracks = tracks1 + tracks2
+        tracks3 = get_artist_tracks(spotify, artist3)
+        tracks4 = get_artist_tracks(spotify, artist4)
+        tracks = tracks1 + tracks2 + tracks3 + tracks4
+        random.shuffle(tracks)
         print(devices)
         print(spotify.me())
         playback_device = request.args.get('device')

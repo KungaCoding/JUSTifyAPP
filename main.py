@@ -112,7 +112,7 @@ def get_tracks(spotify, album):
     tracks = []
     results = spotify.album_tracks(album['id'])
     for result in results['items']:
-        tracks.append(result['id'])
+        tracks.append(result['uri'])
     return tracks
 
 

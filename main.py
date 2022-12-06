@@ -124,6 +124,14 @@ def show_artist_tracks(spotify, artist):
     return page
 
 
+def get_current_playback_song_uri(spotify):
+    playback = spotify.current_playback()
+    song_uri = ""
+    if playback is not None and playback['item'] is not None:
+        song_uri = playback['item']['uri']
+    return song_uri
+
+
 @app.route('/player', methods=['GET'])
 def player():
     scope = "user-read-playback-state,user-modify-playback-state"
@@ -148,6 +156,7 @@ def player():
             play_pause_label = 'pause'
             current_artist = get_current_playback_artist(spotify)
             current_song = get_current_playback_song(spotify)
+            # current_song_uri = get_current_playback_song_uri(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
     if request.args.get('next'):
@@ -156,7 +165,13 @@ def player():
         current_song = get_current_playback_song(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
                                current_artist=current_artist, current_song=current_song)
-
+    # if get_current_playback_song(spotify) is not None:
+    #     # spotify_player = spotify.current_playback()['item']['external_urls']['spotify']
+    #     current_artist = get_current_playback_artist(spotify)
+    #     current_song = get_current_playback_song(spotify)
+    #     current_song_uri = get_current_playback_song_uri(spotify)
+    #     #return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
+    #     #                        current_artist=current_artist, current_song=current_song)
     # else play songs from user selected artists
     artist1_name = str(request.args.get('artist1'))
     artist2_name = str(request.args.get('artist2'))
@@ -165,8 +180,9 @@ def player():
     if artist1_name == "None":
         current_artist = get_current_playback_artist(spotify)
         current_song = get_current_playback_song(spotify)
+        current_song_uri = get_current_playback_song_uri(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
-                               current_artist=current_artist, current_song=current_song)
+                               current_artist=current_artist, current_song=current_song, song_uri=current_song_uri)
     else:
         artist1 = get_artist(spotify, artist1_name)
         artist2 = get_artist(spotify, artist2_name)
@@ -182,8 +198,9 @@ def player():
         spotify.start_playback(device_id=playback_device, uris=tracks)
         current_artist = get_current_playback_artist(spotify)
         current_song = get_current_playback_song(spotify)
+        current_song_uri = get_current_playback_song_uri(spotify)
         return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label,
-                               current_artist=current_artist, current_song=current_song)
+                               current_artist=current_artist, current_song=current_song, song_uri=current_song_uri)
 
 
 def get_current_playback_song(spotify):

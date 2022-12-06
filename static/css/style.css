@@ -7,6 +7,7 @@
 
  h1 {
     margin:  10px;
+    text-align: left;
     font-size: 500%;
     color: white;
   }
@@ -22,9 +23,26 @@
  }
 
  img {
-    width: 5%;
+    width: 15%;
+    max-width: 100%
     height: auto;
     position: relative;
     left: 100px;
  }
 
+ .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ .image {
+    flex-basis: 40%
+}
+
+ .text {
+    font-size: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}

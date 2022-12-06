@@ -196,6 +196,8 @@ def player():
         random.shuffle(tracks)
         playback_device = request.args.get('device')
         spotify.start_playback(device_id=playback_device, uris=tracks)
+        if artist1 == None:
+            return render_template("player.html", devices=devices["devices"], play_pause_label=play_pause_label)
         current_artist = get_current_playback_artist(spotify)
         current_song = get_current_playback_song(spotify)
         current_song_uri = get_current_playback_song_uri(spotify)

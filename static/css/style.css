@@ -1,8 +1,30 @@
  body {
     font: 0.7rem sans-serif;
+    color: white;
+    text-align: center;
+    background-color: rgb(25, 20, 20);
   }
 
-  h1 {
+ h1 {
     margin:  10px;
+    font-size: 500%;
+    color: white;
   }
+
+ h2 {
+    margin:  10px;
+
+    opacity: 0.5;
+  }
+
+ label {
+    font-size: 150%;
+ }
+
+ img {
+    width: 5%;
+    height: auto;
+    position: relative;
+    left: 100px;
+ }
 

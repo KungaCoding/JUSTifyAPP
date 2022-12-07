@@ -34,25 +34,25 @@
  }
 
  img {
-    width: 15%;
-    height: auto;
-    padding-left: 100px;
-    display: block;
- }
-
-.header img {
-    float: left;
     width: 100px;
     height: 100px;
-    position: relative;
+    alignment: center;
+    /*padding-left: 100px;*/
+    /*display: block;*/
+ }
 
-}
+/*.header img {*/
+/*    float: left;*/
 
-.header h1 {
-    position: relative;
-    top: 18px;
-    left: 10px;
-    vertical-align: top;
-}
+/*    !*position: relative;*!*/
+
+/*}*/
+
+/*.header h1 {*/
+/*    !*position: relative;*!*/
+/*    !*top: 18px;*!*/
+/*    !*left: 10px;*!*/
+/*    vertical-align: top;*/
+/*}*/
 
 

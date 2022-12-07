@@ -122,3 +122,8 @@ dmypy.json
 #flask stuff
 .flask_session
 
+#unused pages
+index.html
+
+
+

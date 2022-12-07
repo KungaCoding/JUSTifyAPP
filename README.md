@@ -17,5 +17,12 @@ you must use exact spelling of each artist).
 5. Start listening!
 
 ## Images of Use
+Index
+![Sign into spotify](static/Login.png "Login To Spotify")
 
+Spotify Login
+![Spotify page](static/Spotify_Login_page.png "Spotify Sign in")
+
+Redirect to App
+![App Redirect](static/App_redirect.png "App Redirect")
 

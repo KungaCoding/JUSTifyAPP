@@ -119,5 +119,6 @@ dmypy.json
 # Mac stuff
 .DS_Store
 
-#
+#flask stuff
+.flask_session
 

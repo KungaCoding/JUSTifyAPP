@@ -7,10 +7,34 @@
 
 </head>
 <body>
+    <div class="topnav">
+
+        <input type="submit" value="Signout">
+
+
+    </div>
+    <br>
     <div class="header">
         <img src="/static/spotify.png">
             <h1 class="header">JUSTify Player</h1>
     </div>
+    <h2> <p>Ever want to listen to music on Spotify, but not want
+to create a queue?</p> </h2>
+<h3>
+<p>JUSTify is an app that plays just the songs from the
+artists you select by</p><p>forming a shuffled queue that
+includes each artists' top 10 songs in random order.</p></h3>
+<h3>
+    <br>
+    To use:
+<p>1.Login or register for a Spotify account.</p>
+<p>2. Specify the device connected to Spotify you wish
+to interact with (webplayer, mobile phone,
+desktop app, etc.).</p>
+<p>3. Select between 1 - 4 different artists (at the moment
+you must use exact spelling of each artist).</p>
+<p>4. Press create playlist.</p>
+<p>5. Start listening!</p></h3>
     <br>
     {% if devices|length == 0 %}
     Start a device and reload page!

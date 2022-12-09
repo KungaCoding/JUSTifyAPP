@@ -28,11 +28,12 @@ def index():
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         # Step 1. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
-        return f'<h2><a href="{auth_url}">Login/Register to Spotify</a></h2>'
+        return render_template("login.html", auth_url=auth_url)
 
     # Step 3. Signed in, display data
-    spotify = spotipy.Spotify(auth_manager=auth_manager)
-    return redirect('/player')
+    else:
+        spotify = spotipy.Spotify(auth_manager=auth_manager)
+        return redirect('/player')
 
 
 

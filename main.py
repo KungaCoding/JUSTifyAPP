@@ -129,6 +129,12 @@ def get_current_playback_song_uri(spotify):
 
 @app.route('/player', methods=['GET'])
 def player():
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+    if not auth_manager.validate_token(cache_handler.get_cached_token()):
+        return redirect('/')
+    # spotify = spotipy.Spotify(auth_manager=auth_manager)
+
     scope = "user-read-playback-state,user-modify-playback-state"
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
     play_pause_label = 'pause'
